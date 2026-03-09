@@ -1,0 +1,22 @@
+{% comment %}
+  Hemlock & Oak Product Finder — Shopify Page Template
+
+  SETUP:
+  1. Upload this file to your theme's templates/ folder as "page.product-finder.liquid"
+     OR paste the HTML below into a custom page's content (Shopify Admin > Pages)
+  2. Upload finder.css and finder.js to theme Assets/
+
+  Product data is fetched live from Shopify's built-in AJAX API (/products.json).
+  No API tokens, no sync, no Liquid data output needed — always current.
+  finder.js detects it's on Shopify and fetches automatically.
+{% endcomment %}
+
+{{ 'finder.css' | asset_url | stylesheet_tag }}
+
+<div class="finder-container" id="finder-app">
+  <div style="text-align:center; padding:60px 20px; color:#6B6B6B;">
+    Loading product finder&hellip;
+  </div>
+</div>
+
+<script src="{{ 'finder.js' | asset_url }}" defer></script>
