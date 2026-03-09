@@ -603,12 +603,9 @@ function filterProducts() {
 function countProductsForOption(stepId, optionValue) {
   // Simulate: if we set answers[stepId] = optionValue, how many in-stock products match?
   const testAnswers = { ...state.answers, [stepId]: optionValue };
-  // For inserts, always exclude OOS
-  const isInserts = state.category === 'inserts';
-
   return CATALOG.filter(p => {
     if (p.category !== state.category) return false;
-    if (isInserts && !p.inStock) return false;
+    if (!p.inStock) return false;
 
     for (const [key, value] of Object.entries(testAnswers)) {
       if (value === 'all') continue;
