@@ -247,11 +247,16 @@ const FUN_FACTS = {
 };
 
 let factInterval = null;
+const currentFacts = {}; // tracks the current fact index per step ID
 
 function getRandomFact(stepId) {
   const facts = FUN_FACTS[stepId];
   if (!facts || facts.length === 0) return null;
-  return facts[Math.floor(Math.random() * facts.length)];
+  // Return the stored fact for this step, or pick one and store it
+  if (!(stepId in currentFacts)) {
+    currentFacts[stepId] = Math.floor(Math.random() * facts.length);
+  }
+  return facts[currentFacts[stepId]];
 }
 
 function startFactRotation(stepId) {
@@ -259,16 +264,14 @@ function startFactRotation(stepId) {
   const facts = FUN_FACTS[stepId];
   if (!facts || facts.length <= 1) return;
 
-  let currentIdx = facts.indexOf(document.querySelector('.fun-fact-text')?.textContent) || 0;
-
   factInterval = setInterval(() => {
     const el = document.querySelector('.fun-fact-text');
     if (!el) { stopFactRotation(); return; }
 
     el.style.opacity = '0';
     setTimeout(() => {
-      currentIdx = (currentIdx + 1) % facts.length;
-      el.textContent = facts[currentIdx];
+      currentFacts[stepId] = ((currentFacts[stepId] || 0) + 1) % facts.length;
+      el.textContent = facts[currentFacts[stepId]];
       el.style.opacity = '1';
     }, 300);
   }, 7000);
@@ -353,7 +356,7 @@ function renderCategorySelection() {
 
   const html = `
     <div class="finder-header">
-      <h1>Find Your Perfect Match</h1>
+      <h1>Find Planner Peace</h1>
       <p>Answer a few quick questions and we'll recommend the right products for you.</p>
     </div>
     <h3 class="step-question">What are you looking for?</h3>
